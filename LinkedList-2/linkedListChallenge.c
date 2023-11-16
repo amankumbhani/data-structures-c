@@ -17,12 +17,48 @@ void insertAtBeginning();
 void insertAtEnd();
 void display();
 void insertAtPosition();
-void updatePosition();
 void deletePosition();
 void search();
 
 int main()
 {
+    while (1)
+    {
+        int choice = 0;
+        printf("Select an option from the below options: \n");
+        printf("1. Search for a data item in the list\n");
+        printf("2. Insert data to a position in the list\n");
+        printf("3. Delete data from a position in the list\n");
+        printf("4. Insert at the beginning of the list\n");
+        printf("5. Insert at the end of the list\n");
+        printf("6. Print the list\n");
+        scanf("%d", &choice);
+
+        switch(choice)
+        {
+            case 1:
+                search();
+                break;
+            case 2:
+                insertAtPosition();
+                break;
+            case 3:
+                deletePosition();
+                break;
+            case 4:
+                insertAtBeginning();
+                break;
+            case 5: 
+                insertAtEnd();
+                break;
+            case 6:
+                display();
+                break;
+            default:
+            break;
+        }
+    }
+    
     return 0;
 }
 
@@ -110,12 +146,8 @@ void display()
         {
             printf("%d\t", ptr->data);
         }
+        printf("\n");
     }
-}
-
-void search()
-{
-
 }
 
 void insertAtPosition()
@@ -188,10 +220,81 @@ void insertAtPosition()
 
 void deletePosition()
 {
+    ListNodePtr tempPtr = NULL;
+    ListNodePtr prevNode = NULL;
+    int val = 0, pos = 0, cnt = 0;
+    printf("Enter the position to be deleted: \n");
+    scanf("%d", &pos);
 
+    if (head == NULL)
+    {
+        printf("The list is empty\n");
+    }
+    else 
+    {
+        tempPtr = head;
+        if (pos == 1)
+        {
+            /* The head has to be deleted */
+            head = tempPtr->nextNode;
+        }
+        else 
+        {   
+            tempPtr = head;
+            while (tempPtr != NULL)
+            {
+                cnt++;
+                tempPtr = tempPtr->nextNode;
+            }
+            if (pos > 1 && pos <= cnt)
+            {
+                tempPtr = head;
+                /* Traverse through the list & find the node that has to be deleted */
+                for (int i = 1; i < pos; i++)
+                {
+                    prevNode = tempPtr;
+                    tempPtr = tempPtr->nextNode;
+                }
+                prevNode->nextNode = tempPtr->nextNode;
+            }
+        }
+        free(tempPtr);
+    }
 }
 
-void updatePosition()
+void search()
 {
+    ListNodePtr temp = NULL;
+    bool flag = 0;
+    int key = 0, pos = 1;
 
+    printf("Enter the number to be searched: \n");
+    scanf("%d", &key);
+
+    if (head == NULL)
+    {
+        printf("The list is empty!\n");
+    }
+    else 
+    {
+        temp = head;
+        while (temp != NULL)
+        {
+            if (temp->data == key)
+            {
+                flag = 1;
+                break;
+            }
+            temp = temp->nextNode;
+            pos++;
+        }
+        if (flag)
+        {
+            printf("The number was found at %d position!\n", pos);
+        }
+        else 
+        {
+            printf("Could not find the entered number\n");
+        }
+    }
 }
